@@ -43,14 +43,12 @@ class abrp_Blog_Authors extends WP_Widget {
 
            echo '<ul class="'.$instance['profile_style'].'">';
 		//Display the name 
-		//
 		  add_filter( 'posts_groupby',array($this,'abrp_posts_groupby'));
 		  global $post;
           $auth_args = array( 'post_type' => 'post','post_status' => 'publish', 'posts_per_page'=>-1 );
           $query = new WP_Query( $auth_args );
           $author_array =  Array();
           $authors  =  Array();
-         
 
 	      while ($query->have_posts()) : $query->the_post(); 
                 $author_array[] = $post->post_author;
@@ -58,12 +56,12 @@ class abrp_Blog_Authors extends WP_Widget {
 	      wp_reset_query();
           $countAuthor=0;
 		  $hideAuthor="";
+		  $role = array();
 		  foreach ($author_array as $author_id ) :
 				$role = get_the_author_meta('roles', $author_id);
 			//var_dump($instance['role']);
 			// show specific authors list based on role
-			// 
-		 		 
+	 		 
 		 		   if($instance['role'] == $role[0] )  :
 			            $hideAuthor = ($countAuthor >3) ? 'style="display:none"' : '';
 						echo ' <li '.$hideAuthor.' >';
@@ -123,8 +121,10 @@ class abrp_Blog_Authors extends WP_Widget {
 				return $instance;
 	}  // end of function update
 
-			function form( $instance ) {
+	function form( $instance ) {
 				//Set up some default widget settings.
+				//
+				$instance['profile_style'] = array();
 				$defaults = array( 'title' => __('Blog Authors', 'default'));
 				$instance = wp_parse_args( (array) $instance, $defaults ); 
 				// Widget Title: Text Input.
@@ -146,7 +146,7 @@ class abrp_Blog_Authors extends WP_Widget {
 			<option value="circular"  <?php echo ($instance['profile_style'] =='circular' ) ?  'selected="selected"' : "";  ?> >Rounded</option>
 			</select> 
 			</p> 
-			<?php
+	<?php
 	}  // end on form function 
 	
 	function abrp_show_extra_profile_fields($user){ ?>
@@ -179,26 +179,7 @@ class abrp_Blog_Authors extends WP_Widget {
 } // end of class abrp_Blog_Authors
 
 add_action( 'widgets_init', 'abrp_Blog_Authors_init');
+
 	function abrp_Blog_Authors_init() {
 		register_widget( 'abrp_Blog_Authors' );
 	 }
-	add_action( 'wp_head', 'abrp_GoogleFonts');
-	function abrp_GoogleFonts() { ?>
-
-<script type="text/javascript">
-		WebFontConfig = {
-			google: {
-				families: ['Roboto:400,300,300italic,500,700,500italic:latin']
-				}
-			};
-		(function() {
-			var wf = document.createElement('script');
-			wf.src = ('https:' == document.location.protocol ? 'https' : 'http') +
-				'://ajax.googleapis.com/ajax/libs/webfont/1/webfont.js';
-			wf.type = 'text/javascript';
-			wf.async = 'true';
-			var s = document.getElementsByTagName('script')[0];
-			s.parentNode.insertBefore(wf, s);
-		})();
-    </script>
-<?php } ?>
