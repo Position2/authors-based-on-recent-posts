@@ -1,7 +1,7 @@
 === Authors based on recent posts ===
 Contributors: position2.inc 
 Tags: authors, list authors, recent posts, posts, widget
-compatable up to: 3.9.1
+compatable up to: 5.0
 Stable tag: 1.0.0
 License: GPLv2 or later
 License URI: http://www.gnu.org/licenses/gpl-2.0.html 
